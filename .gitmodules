@@ -1,0 +1,12 @@
+[submodule "hunav_sim"]
+	path = hunav_sim
+	url = https://github.com/robotics-upo/hunav_sim.git
+[submodule "hunav_gazebo_wrapper"]
+	path = hunav_gazebo_wrapper
+	url = https://github.com/eieioF11/hunav_gazebo_wrapper.git
+[submodule "unitree-go2-ros2"]
+	path = unitree-go2-ros2
+	url = https://github.com/eieioF11/unitree-go2-ros2.git
+[submodule "livox_laser_simulation_RO2"]
+	path = livox_laser_simulation_RO2
+	url = https://github.com/eieioF11/livox_laser_simulation_RO2.git
