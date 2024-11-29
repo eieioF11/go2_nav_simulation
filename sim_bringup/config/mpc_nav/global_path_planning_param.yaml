@@ -1,0 +1,17 @@
+global_path_planning_node:
+  ros__parameters:
+    global_path_planning:
+      topic_name:
+        map: "/mpc_nav/cost_map"
+        global_path: "global_path_planning/path"
+        target: "/goal_pose"
+      service_name:
+        reset: "/global_path_planning/reset"
+      tf_frame:
+        map_frame: "map"
+        robot_frame: "base_link"
+      planning_period: 0.1
+      time_out: 2.0
+      path_planner: "extension_a_star"
+      extension_a_star:
+        weight: 0.5

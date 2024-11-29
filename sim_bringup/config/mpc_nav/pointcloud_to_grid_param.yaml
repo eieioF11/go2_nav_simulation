@@ -1,0 +1,24 @@
+pointcloud_to_grid_node:
+  ros__parameters:
+    pointcloud_to_grid:
+      topic_name:
+        map: "/mpc_nav/map"
+        storage_map: "/mpc_nav/storage_map"
+        cloud: "/glim_ros/points"
+      tf_frame:
+        map_frame: "map"
+        robot_frame: "base_link"
+      add_cell: false
+      storage_map:
+        publish_rate: 1.0 #[s]
+        que_size: 5
+      filter:
+        voxelgrid_size: 0.01
+        height_axis: "z"
+        h_max: 1.0
+        h_min: 0.5
+      grid_map_info:
+        resolution: 0.1 #[m] def 0.05
+        # origin: [-5.0,-5.0,0.0]
+        width: 25.0 #[m]
+        height: 25.0 #[m]

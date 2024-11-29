@@ -1,0 +1,11 @@
+cost_map_node:
+  ros__parameters:
+    cost_map:
+      topic_name:
+        map: "/mpc_nav/storage_map"
+        cost_map: "/mpc_nav/cost_map"
+      publish_rate: 1.0 #[s]
+      threshold: 20 #(0~255)距離場の値がthreshold[pixel]より小さい値のみ使用する、大きい値は255
+      # map[x,y] = GridMap::WALL_VALUE*exp(img[x,y]+alpha)+beta ※img[x,y]:0~1の値で1が障害物
+      alpha: -0.2
+      beta: -1.0

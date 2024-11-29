@@ -1,0 +1,33 @@
+mppi_path_planning_node:
+  ros__parameters:
+    mppi_path_planning:
+      tf_frame:
+        map: "map"
+        base_link: "base_link"
+      topic_name:
+        map: "/mpc_nav/cost_map"
+        target: "/goal_pose"
+        odom: "/odom"
+      planning_period: 0.25
+      min_vel: [-0.4, 0.0, -1.0]
+      max_vel: [0.4, 0.0, 1.0]
+      holonomic: false
+      mppi:
+        T: 50
+        K: 500
+        J: 0.9
+        dt: 0.25 # [s]
+        lambda: 1.0 # temperature parameter
+        alpha: 0.85
+        sigma: [0.05, 0.0001, 0.05]
+        weight:
+          state: [0.0, 0.0, 0.0, 800.0, 800.0, 500.0]
+          terminal: [1000.0, 1000.0, 1000.0, 1200.0, 1200.0, 900.0]
+          control: [12.0, 0.0, 5.0]
+        obstacle_cost: 10000.0
+        window_size: 20.0 # 70.0
+        terminal_distance: 0.5
+      max_cost_map_value: 0.8
+      min_cost_map_value: 0.5
+      xy_vel_time_constant: 0.0
+      theta_vel_time_constant: 0.0

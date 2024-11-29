@@ -1,0 +1,53 @@
+mpc_path_planning_node:
+  ros__parameters:
+    mpc_path_planning:
+      topic_name:
+        map: "/mpc_nav/map"
+        target: "/goal_pose"
+        odom: "/odom"
+        global_path: "/global_path_planning/path"
+        init_path: "mpc_path_planning/init_path"
+        opti_path: "mpc_path_planning/opti_path"
+      tf_frame:
+        map_frame: "map"
+        robot_frame: "base_link"
+      planning_period: 0.1 #[s]
+      mpc:
+        T: 50
+        dt: 0.1 #[s] 0.135
+        # pos_error:      0.035 #0.015 # 0.01
+        pos_error: 1.5 #[m] 0.8
+        # ロボット制約
+        holonomic: false
+        forward_only: false
+        min_vel: 0.0 #[m/s]  最小速度制限(0~)
+        max_vel: 0.6 #[m/s]
+        min_angular: 0.0 #[rad/s] 最小速度制限(0~)
+        max_angular: 2.84 #[rad/s] 2.84
+        max_acc: 2.9 #[m/s^s] 1.1 4.9 3.9 0.98 2.9
+        max_angular_acc: 4.9 #[rad/s^s] 1.0 4.9
+        # モデルパラメータ
+        xy_vel_time_constant: 0.0
+        theta_vel_time_constant: 0.0
+        #重み[vx,vy,w,x,y,x]
+        weight:
+          state: [0.5, 0.0, 2.0, 50.0, 50.0, 10.0] #ステートコストの重み [10.0, 0.0, 10.0, 800.0, 800.0, 10.0]
+          final_state: [0.5, 0.0, 0.5, 1000.0, 1000.0, 70.0] #終端コストの重み     [10.0, 0.0, 10.0, 800.0, 800.0, 10.0]
+          control: [10.0, 0.0, 10.0] #制御量コストの重み
+          diff_control: [60.0, 0.0, 20.0] #制御量変化コストの重み
+        warm_start:
+          latest_gpl_norm: 0.01 #[m] 最後に初期値計算を行った地点からlatest_gpl_norm[m]離れたら
+          latest_target_norm: 0.01 #[m] 目標値がlatest_target_norm[m]以内(変わってない)とき
+        terminal_distance: 0.45
+        ipopt: #ソルバー設定
+          sb: "yes" # コンソールにヘッダを出力しない
+          linear_solver: "mumps" # mumpsは遅い ma27,ma57,ma86,ma97はHSLライブラリ必要 (mumps:40msくらい,ma27:10msくらい)
+          max_iter: 1000 #最大反復回数 def 500
+          acceptable_tol: 0.000001 #収束許容値 def 0.000001
+          compl_inf_tol: 0.0001 #相補性条件の「許容」しきい値 def 0.0001
+      obstacle_detect:
+        dist: 5.0 #[m]
+        max_obstacle_size: 1.0 #[m]
+        min_obstacle_size: 0.5 #[m]
+        list_size: 50
+        nearby_obstacle_limit: 0.8 #[m]

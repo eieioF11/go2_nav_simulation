@@ -1,0 +1,17 @@
+control_node:
+  ros__parameters:
+    control:
+      tf_frame:
+        map: "map"
+        base_link: "base_link"
+      topic_name:
+        odom: "/odom"
+        cmd_vel: "auto/cmd_vel"
+      control_period: 0.01
+      min_vel: [-0.4, 0.0, -1.0]
+      max_vel: [0.4, 0.0, 1.0]
+      goal:
+        pos_range: 0.25 #[m]
+        angle_range: 5.0 #[deg]
+        min_vel_range: 0.2 #[m/s]
+        min_angular_range: 0.2 #[rad/s]

@@ -1,0 +1,9 @@
+scan_to_pointcloud_node:
+  ros__parameters:
+    scan_to_pointcloud:
+      topic_name:
+        laser: "/scan"
+        cloud: "/points"
+      filter:
+        use_voxelgrid: false
+        voxelgrid_size: 0.2
