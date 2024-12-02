@@ -34,7 +34,8 @@ def generate_launch_description():
     gait_config = os.path.join(config_pkg_share, "config/gait/gait.yaml")
     links_config = os.path.join(config_pkg_share, "config/links/links.yaml")
     # default_model_path = os.path.join(descr_pkg_share, "xacro/robot.xacro")
-    default_model_path = os.path.join(descr_pkg_share, "xacro/robot_mid360.xacro")
+    default_model_path = os.path.join(
+        descr_pkg_share, "xacro/robot_mid360.xacro")
     default_world_path = os.path.join(config_pkg_share, "worlds/default.world")
 
     declare_use_sim_time = DeclareLaunchArgument(
@@ -63,14 +64,16 @@ def generate_launch_description():
     declare_gui = DeclareLaunchArgument(
         "gui", default_value="true", description="Use gui"
     )
-    declare_world_init_x = DeclareLaunchArgument("world_init_x", default_value="1.0")
-    declare_world_init_y = DeclareLaunchArgument("world_init_y", default_value="1.0")
-    declare_world_init_z = DeclareLaunchArgument("world_init_z", default_value="0.275")
+    declare_world_init_x = DeclareLaunchArgument(
+        "world_init_x", default_value="1.0")
+    declare_world_init_y = DeclareLaunchArgument(
+        "world_init_y", default_value="1.0")
+    declare_world_init_z = DeclareLaunchArgument(
+        "world_init_z", default_value="0.275")
     declare_world_init_heading = DeclareLaunchArgument(
         "world_init_heading", default_value="0.0"
     )
 
-    
     bringup_ld = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(
@@ -182,7 +185,8 @@ def generate_launch_description():
         package="champ_gazebo",
         executable="contact_sensor",
         output="screen",
-        parameters=[{"use_sim_time": LaunchConfiguration("use_sim_time")},links_config],
+        parameters=[{"use_sim_time": LaunchConfiguration(
+            "use_sim_time")}, links_config],
         # prefix=['xterm -e gdb -ex run --args'],
     )
 
@@ -199,8 +203,8 @@ def generate_launch_description():
             declare_world_init_y,
             declare_world_init_z,
             declare_world_init_heading,
-            bringup_ld,
             gazebo_ld,
+            bringup_ld,
             start_gazebo_spawner_cmd,
             load_joint_state_controller,
             # load_joint_trajectory_position_controller
