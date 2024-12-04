@@ -26,11 +26,6 @@ def generate_launch_description():
                 [os.path.join(pkg_dir, "launch"), "/sim_go2_glim.launch.py"]
             ),
         ),
-        IncludeLaunchDescription(
-            PythonLaunchDescriptionSource(
-                [os.path.join(pkg_dir, "launch"), "/sim_go2_glim.launch.py"]
-            ),
-        ),
         Node(
             package='joy',
             executable='joy_node',
