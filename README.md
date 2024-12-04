@@ -25,6 +25,8 @@ sudo apt install ros-$ROS_DISTRO-velodyne
 sudo apt install ros-$ROS_DISTRO-velodyne-gazebo-plugins
 sudo apt-get install ros-$ROS_DISTRO-velodyne-description
 ```
+## Install Glim
+https://koide3.github.io/glim/installation.html
 
 ## Clone repository
 ```bash
@@ -34,4 +36,15 @@ rosdep update
 rosdep install -yi --rosdistro humble --from-paths .
 cd ../
 colcon build --symlink-install
+```
+
+# Run
+## Launching a Simulation
+```bash
+ros2 launch sim_bringup sim_bringup.launch.py
+```
+
+## Launch Rviz2
+```bash
+ros2 launch sim_bringup sim_rviz.launch.py
 ```
