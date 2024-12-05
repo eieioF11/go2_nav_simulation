@@ -7,3 +7,6 @@
 [submodule "livox_laser_simulation_RO2"]
 	path = livox_laser_simulation_RO2
 	url = https://github.com/eieioF11/livox_laser_simulation_RO2.git
+[submodule "hunav_sim"]
+	path = hunav_sim
+	url = https://github.com/eieioF11/hunav_sim.git
