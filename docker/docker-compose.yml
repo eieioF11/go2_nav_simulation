@@ -1,0 +1,194 @@
+version: "2.3"
+services:
+
+  # bash
+  bash:
+    container_name: bash
+    image: ros:humble
+    network_mode: "host"
+    command: bash -c "bash"
+    working_dir: /root/
+    volumes:
+      - ../:/root/ros2_ws/src/go2_nav_simulation
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - /etc/localtime:/etc/localtime:ro
+      - /dev/input:/dev/input
+      - /dev/bus/usb/:/dev/bus/usb/:rw
+      - /tmp/.docker.xauth:/tmp/.docker.xauth:rw
+    environment:
+      - XAUTHORITY=/tmp/.docker.xauth
+      - DISPLAY={$DISPLAY}
+      - QT_X11_NO_MITSHM=1
+      - ROS_DOMAIN_ID=${ROS_DOMAIN_ID}
+    privileged: true
+    stdin_open: true
+    tty: true
+
+  bash-gpu:
+    container_name: bash
+    image: ros:humble
+    network_mode: "host"
+    runtime: nvidia
+    command: bash -c "bash"
+    working_dir: /root/
+    volumes:
+      - ../:/root/ros2_ws/src/go2_nav_simulation
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - /etc/localtime:/etc/localtime:ro
+      - /dev/input:/dev/input
+      - /dev/bus/usb/:/dev/bus/usb/:rw
+      - /tmp/.docker.xauth:/tmp/.docker.xauth:rw
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      - XAUTHORITY=/tmp/.docker.xauth
+      - DISPLAY
+      - QT_X11_NO_MITSHM=1
+      - ROS_DOMAIN_ID=${ROS_DOMAIN_ID}
+    deploy:
+        resources:
+            reservations:
+                devices:
+                    - capabilities: [gpu]
+    privileged: true
+    stdin_open: true
+    tty: true
+
+  # GPUテスト
+  test-gpu:
+    container_name: test-gpu
+    image: ros:humble
+    network_mode: "host"
+    runtime: nvidia
+    command: nvidia-smi
+    working_dir: /root/
+    volumes:
+      - ../:/root/ros2_ws/src/go2_nav_simulation
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - /etc/localtime:/etc/localtime:ro
+      - /dev/input:/dev/input
+      - /dev/bus/usb/:/dev/bus/usb/:rw
+      - /tmp/.docker.xauth:/tmp/.docker.xauth:rw
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      - XAUTHORITY=/tmp/.docker.xauth
+      - DISPLAY
+      - QT_X11_NO_MITSHM=1
+      - ROS_DOMAIN_ID=${ROS_DOMAIN_ID}
+    deploy:
+        resources:
+            reservations:
+                devices:
+                    - capabilities: [gpu]
+    privileged: true
+    stdin_open: true
+    tty: true
+
+  # build
+  colcon-build:
+    container_name: colcon-build
+    image: ros:humble
+    working_dir: /root/ros2_ws
+    command: bash -c "colcon build --symlink-install --parallel-workers 3 --cmake-args -DCMAKE_BUILD_TYPE=Release"
+    volumes:
+      - ../:/root/ros2_ws/src/go2_nav_simulation
+    tty: true
+
+  colcon-build-clean:
+    container_name: colcon-build
+    image: ros:humble
+    working_dir: /root/ros2_ws
+    command: bash -c "colcon build --symlink-install --parallel-workers 3 --cmake-clean-cache --cmake-args -DCMAKE_BUILD_TYPE=Release"
+    volumes:
+      - ../:/root/ros2_ws/src/go2_nav_simulation
+    tty: true
+
+
+  # rviz2
+  rviz2:
+    container_name: rviz2
+    image: ros:humble
+    network_mode: "host"
+    command: bash -c 'rviz2'
+    volumes:
+      - ../:/root/ros2_ws/src/go2_nav_simulation
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - /etc/localtime:/etc/localtime:ro
+      - /dev/input:/dev/input
+      - /tmp/.docker.xauth:/tmp/.docker.xauth:rw
+    environment:
+      - XAUTHORITY=/tmp/.docker.xauth
+      - DISPLAY
+      - QT_X11_NO_MITSHM=1
+      - ROS_DOMAIN_ID=${ROS_DOMAIN_ID}
+    privileged: true
+    tty: true
+
+  # rqt
+  rqt:
+    container_name: rqt
+    image: ros:humble
+    network_mode: "host"
+    command: bash -c 'rqt'
+    volumes:
+      - ../:/root/ros2_ws/src/go2_nav_simulation
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - /etc/localtime:/etc/localtime:ro
+      - /dev/input:/dev/input
+      - /tmp/.docker.xauth:/tmp/.docker.xauth:rw
+    environment:
+      - XAUTHORITY=/tmp/.docker.xauth
+      - DISPLAY
+      - QT_X11_NO_MITSHM=1
+      - ROS_DOMAIN_ID=${ROS_DOMAIN_ID}
+    privileged: true
+    tty: true
+
+  # gazebo
+  gazebo:
+    container_name: gazebo
+    image: ros:humble
+    network_mode: "host"
+    command: bash -c 'ros2 launch sim_bringup sim_bringup.launch.py'
+    volumes:
+      - ../:/root/ros2_ws/src/go2_nav_simulation
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - /etc/localtime:/etc/localtime:ro
+      - /dev/input:/dev/input
+      - /tmp/.docker.xauth:/tmp/.docker.xauth:rw
+    environment:
+      - XAUTHORITY=/tmp/.docker.xauth
+      - DISPLAY
+      - QT_X11_NO_MITSHM=1
+      - ROS_DOMAIN_ID=${ROS_DOMAIN_ID}
+    privileged: true
+    tty: true
+
+  gazebo-gpu:
+    container_name: gazebo-gpu
+    image: ros:humble
+    network_mode: "host"
+    runtime: nvidia
+    command: bash -c 'ros2 launch sim_bringup sim_bringup.launch.py'
+    volumes:
+      - ../:/root/ros2_ws/src/go2_nav_simulation
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - /etc/localtime:/etc/localtime:ro
+      - /dev/input:/dev/input
+      - /tmp/.docker.xauth:/tmp/.docker.xauth:rw
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      - XAUTHORITY=/tmp/.docker.xauth
+      - DISPLAY
+      - QT_X11_NO_MITSHM=1
+      - ROS_DOMAIN_ID=${ROS_DOMAIN_ID}
+    deploy:
+        resources:
+            reservations:
+                devices:
+                    - capabilities: [gpu]
+    privileged: true
+    tty: true
+
