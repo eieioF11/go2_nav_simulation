@@ -4,7 +4,7 @@ services:
   # bash
   bash:
     container_name: bash
-    image: ros:humble
+    image: go2_sim_ros:humble
     network_mode: "host"
     command: bash -c "bash"
     working_dir: /root/
@@ -26,7 +26,7 @@ services:
 
   bash-gpu:
     container_name: bash
-    image: ros:humble
+    image: go2_sim_ros:humble
     network_mode: "host"
     runtime: nvidia
     command: bash -c "bash"
@@ -57,7 +57,7 @@ services:
   # GPUテスト
   test-gpu:
     container_name: test-gpu
-    image: ros:humble
+    image: go2_sim_ros:humble
     network_mode: "host"
     runtime: nvidia
     command: nvidia-smi
@@ -88,7 +88,7 @@ services:
   # build
   colcon-build:
     container_name: colcon-build
-    image: ros:humble
+    image: go2_sim_ros:humble
     working_dir: /root/ros2_ws
     command: bash -c "colcon build --symlink-install --parallel-workers 3 --cmake-args -DCMAKE_BUILD_TYPE=Release"
     volumes:
@@ -97,7 +97,7 @@ services:
 
   colcon-build-clean:
     container_name: colcon-build
-    image: ros:humble
+    image: go2_sim_ros:humble
     working_dir: /root/ros2_ws
     command: bash -c "colcon build --symlink-install --parallel-workers 3 --cmake-clean-cache --cmake-args -DCMAKE_BUILD_TYPE=Release"
     volumes:
@@ -108,7 +108,7 @@ services:
   # rviz2
   rviz2:
     container_name: rviz2
-    image: ros:humble
+    image: go2_sim_ros:humble
     network_mode: "host"
     command: bash -c 'rviz2'
     volumes:
@@ -128,7 +128,7 @@ services:
   # rqt
   rqt:
     container_name: rqt
-    image: ros:humble
+    image: go2_sim_ros:humble
     network_mode: "host"
     command: bash -c 'rqt'
     volumes:
@@ -148,7 +148,7 @@ services:
   # gazebo
   gazebo:
     container_name: gazebo
-    image: ros:humble
+    image: go2_sim_ros:humble
     network_mode: "host"
     command: bash -c 'ros2 launch sim_bringup sim_bringup.launch.py'
     volumes:
@@ -167,7 +167,7 @@ services:
 
   gazebo-gpu:
     container_name: gazebo-gpu
-    image: ros:humble
+    image: go2_sim_ros:humble
     network_mode: "host"
     runtime: nvidia
     command: bash -c 'ros2 launch sim_bringup sim_bringup.launch.py'

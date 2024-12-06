@@ -4,6 +4,8 @@ FROM nvidia/opengl:base-ubuntu22.04
 # 環境変数の設定
 ENV ROS_DISTRO humble
 ENV ROS_WS ros2_ws
+
+ARG PACKAGE_SUFFIX=cuda12.2
 ARG DEBIAN_FRONTEND=noninteractive
 
 ENV __NV_PRIME_RENDER_OFFLOAD=1
@@ -80,6 +82,17 @@ RUN apt-get update && apt-get install -y \
 RUN curl -sSL https://eieiof11.github.io/ppa/ppa.key -o /usr/share/keyrings/ppa.gpg
 RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ppa.gpg] https://eieiof11.github.io/ppa $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | tee /etc/apt/sources.list.d/ppa.list > /dev/null
 RUN echo "yaml https://eieiof11.github.io/ppa/rosdep.yaml" | tee /etc/ros/rosdep/sources.list.d/99-ppa.list > /dev/null
+
+RUN curl -s --compressed "https://koide3.github.io/ppa/ubuntu2204/KEY.gpg" | gpg --dearmor | tee /etc/apt/trusted.gpg.d/koide3_ppa.gpg >/dev/null
+RUN echo "deb [signed-by=/etc/apt/trusted.gpg.d/koide3_ppa.gpg] https://koide3.github.io/ppa/ubuntu2204 ./" | tee /etc/apt/sources.list.d/koide3_ppa.list
+RUN apt-get update
+RUN sudo apt install -y libboost-all-dev libglfw3-dev libmetis-dev
+
+RUN apt-get install --no-install-recommends -y \
+    libiridescence-dev\
+    libgtsam-points-${PACKAGE_SUFFIX}-dev\
+    ros-humble-glim-ros-${PACKAGE_SUFFIX}
+
 RUN sudo apt update && rosdep update
 
 RUN apt-get update && apt-get install -y \
@@ -99,14 +112,6 @@ RUN /bin/bash -c "source /opt/ros/$ROS_DISTRO/setup.bash && colcon build --symli
 # install the lightsfm library
 RUN git clone https://github.com/robotics-upo/lightsfm.git \
     && cd lightsfm && make && make install
-
-# # clone ros2 packages
-# WORKDIR /home/user/$ROS_WS/src
-# RUN git clone --recursive https://github.com/eieioF11/go2_nav_simulation.git
-
-# # rosdep install
-# WORKDIR /home/user/$ROS_WS
-# RUN rosdep install -y --from-paths src --ignore-src --rosdistro $ROS_DISTRO
 
 # 環境設定
 RUN echo "source /opt/ros/$ROS_DISTRO/setup.bash" >> ~/.bashrc

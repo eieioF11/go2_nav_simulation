@@ -4,5 +4,5 @@
 
 # Installation
 ```bash
-docker build -t ros:humble .
+docker build -t go2_sim_ros:humble .
 ```
