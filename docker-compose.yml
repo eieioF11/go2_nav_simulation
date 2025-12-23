@@ -9,7 +9,7 @@ services:
     command: bash -c "bash"
     working_dir: /root/
     volumes:
-      - ../:/root/ros2_ws/src/go2_nav_simulation
+      - ./:/root/ros2_ws/src/go2_nav_simulation
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
       - /etc/localtime:/etc/localtime:ro
       - /dev/input:/dev/input
@@ -32,7 +32,7 @@ services:
     command: bash -c "bash"
     working_dir: /root/
     volumes:
-      - ../:/root/ros2_ws/src/go2_nav_simulation
+      - ./:/root/ros2_ws/src/go2_nav_simulation
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
       - /etc/localtime:/etc/localtime:ro
       - /dev/input:/dev/input
@@ -63,7 +63,7 @@ services:
     command: nvidia-smi
     working_dir: /root/
     volumes:
-      - ../:/root/ros2_ws/src/go2_nav_simulation
+      - ./:/root/ros2_ws/src/go2_nav_simulation
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
       - /etc/localtime:/etc/localtime:ro
       - /dev/input:/dev/input
@@ -92,7 +92,7 @@ services:
     working_dir: /root/ros2_ws
     command: bash -c "colcon build --symlink-install --parallel-workers 3 --cmake-args -DCMAKE_BUILD_TYPE=Release"
     volumes:
-      - ../:/root/ros2_ws/src/go2_nav_simulation
+      - ./:/root/ros2_ws/src/go2_nav_simulation
     tty: true
 
   colcon-build-clean:
@@ -101,7 +101,7 @@ services:
     working_dir: /root/ros2_ws
     command: bash -c "colcon build --symlink-install --parallel-workers 3 --cmake-clean-cache --cmake-args -DCMAKE_BUILD_TYPE=Release"
     volumes:
-      - ../:/root/ros2_ws/src/go2_nav_simulation
+      - ./:/root/ros2_ws/src/go2_nav_simulation
     tty: true
 
 
@@ -112,7 +112,7 @@ services:
     network_mode: "host"
     command: bash -c 'rviz2'
     volumes:
-      - ../:/root/ros2_ws/src/go2_nav_simulation
+      - ./:/root/ros2_ws/src/go2_nav_simulation
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
       - /etc/localtime:/etc/localtime:ro
       - /dev/input:/dev/input
@@ -132,7 +132,7 @@ services:
     network_mode: "host"
     command: bash -c 'rqt'
     volumes:
-      - ../:/root/ros2_ws/src/go2_nav_simulation
+      - ./:/root/ros2_ws/src/go2_nav_simulation
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
       - /etc/localtime:/etc/localtime:ro
       - /dev/input:/dev/input
@@ -152,7 +152,7 @@ services:
     network_mode: "host"
     command: bash -c 'ros2 launch sim_bringup sim_bringup.launch.py'
     volumes:
-      - ../:/root/ros2_ws/src/go2_nav_simulation
+      - ./:/root/ros2_ws/src/go2_nav_simulation
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
       - /etc/localtime:/etc/localtime:ro
       - /dev/input:/dev/input
@@ -172,7 +172,7 @@ services:
     runtime: nvidia
     command: bash -c 'ros2 launch sim_bringup sim_bringup.launch.py'
     volumes:
-      - ../:/root/ros2_ws/src/go2_nav_simulation
+      - ./:/root/ros2_ws/src/go2_nav_simulation
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
       - /etc/localtime:/etc/localtime:ro
       - /dev/input:/dev/input

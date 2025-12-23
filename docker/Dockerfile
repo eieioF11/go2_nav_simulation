@@ -56,6 +56,13 @@ RUN apt-get update && apt-get install -y \
     liblapack-dev \
     libmetis-dev
 
+# Install ign gazebo fortress
+RUN wget https://packages.osrfoundation.org/gazebo.gpg -O /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg
+RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] http://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/gazebo-stable.list > /dev/null
+RUN apt-get update
+RUN apt-get install -y \
+    ignition-fortress
+
 # ros packages
 RUN apt-get update && apt-get install -y \
     ros-${ROS_DISTRO}-pcl-* \
@@ -64,7 +71,6 @@ RUN apt-get update && apt-get install -y \
     ros-${ROS_DISTRO}-navigation2 \
     ros-${ROS_DISTRO}-nav2-bringup \
     ros-${ROS_DISTRO}-joy \
-    ros-${ROS_DISTRO}-gazebo-* \
     ros-${ROS_DISTRO}-rqt-* \
     ros-${ROS_DISTRO}-rviz-* \
     ros-${ROS_DISTRO}-xacro \
@@ -76,7 +82,9 @@ RUN apt-get update && apt-get install -y \
     ros-${ROS_DISTRO}-velodyne-description \
     ros-${ROS_DISTRO}-diagnostic-updater \
     ros-${ROS_DISTRO}-nav2-behavior-tree \
-    ros-${ROS_DISTRO}-behaviortree-cpp-v3
+    ros-${ROS_DISTRO}-behaviortree-cpp-v3 \
+    ros-${ROS_DISTRO}-ros-gz-* \
+    ros-${ROS_DISTRO}-gz-ros2-control
 
 # other packages
 RUN curl -sSL https://eieiof11.github.io/ppa/ppa.key -o /usr/share/keyrings/ppa.gpg
@@ -119,3 +127,6 @@ RUN echo "source /usr/share/gazebo/setup.sh" >> ~/.bashrc
 RUN echo "source /home/user/$ROS_WS/install/local_setup.bash" >> ~/.bashrc
 RUN echo "source /usr/share/colcon_cd/function/colcon_cd.sh" >> ~/.bashrc
 RUN echo "export _colcon_cd_root=/home/user/$ROS_WS" >> ~/.bashrc
+COPY ./ros_entrypoint.sh /ros_entrypoint.sh
+RUN chmod +x /ros_entrypoint.sh
+ENTRYPOINT ["/ros_entrypoint.sh"]
